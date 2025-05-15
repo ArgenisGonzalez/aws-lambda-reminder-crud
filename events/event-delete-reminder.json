@@ -1,0 +1,6 @@
+{
+  "httpMethod": "DELETE",
+  "pathParameters": {
+    "id": "c79ecb26-dc58-473e-b08d-24f652c50dfe"
+  }
+}

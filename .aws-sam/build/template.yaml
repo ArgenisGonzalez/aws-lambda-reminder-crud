@@ -1,0 +1,92 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: reminderBot
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  createReminderFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/create-reminder.createReminderHandler
+      Runtime: nodejs18.x
+      Architectures:
+      - x86_64
+      MemorySize: 128
+      Timeout: 10
+      Description: Create a new reminder in the db.
+      Environment:
+        Variables:
+          REMINDER_TABLE:
+            Ref: ReminderTable
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: ReminderTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /reminders
+            Method: POST
+      CodeUri: createReminderFunction
+    Metadata:
+      SamResourceId: createReminderFunction
+  getAllReminderFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/get-all-reminder.getAllReminderHandler
+      Runtime: nodejs18.x
+      Architectures:
+      - x86_64
+      MemorySize: 128
+      Timeout: 10
+      Description: Get all reminders from the db.
+      Environment:
+        Variables:
+          REMINDER_TABLE:
+            Ref: ReminderTable
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: ReminderTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /reminders
+            Method: GET
+      CodeUri: getAllReminderFunction
+    Metadata:
+      SamResourceId: getAllReminderFunction
+  deleteReminderFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/delete-reminder.deleteReminderHandler
+      Runtime: nodejs18.x
+      Architectures:
+      - x86_64
+      MemorySize: 128
+      Timeout: 10
+      Description: Delete a reminder by id from the db.
+      Environment:
+        Variables:
+          REMINDER_TABLE:
+            Ref: ReminderTable
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: ReminderTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /reminders/{id}
+            Method: DELETE
+      CodeUri: deleteReminderFunction
+    Metadata:
+      SamResourceId: deleteReminderFunction
+  ReminderTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: REMINDER_TABLE
+      PrimaryKey:
+        Name: id
+        Type: String

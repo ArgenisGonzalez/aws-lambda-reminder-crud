@@ -1,0 +1,4 @@
+{
+  "httpMethod": "POST",
+  "body": "{\"id\": \"rmd-001\", \"description\": \"🐱 Feed the cat\", \"eventTime\": \"2025-05-15T17:19:00Z\", \"duration\": 5}"
+}
